@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Host
+Host: https://nextcode.com
+
+# Sitemaps
+Sitemap: https://nextcode.com/sitemap.xml

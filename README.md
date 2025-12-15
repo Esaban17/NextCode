@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NextCode - Sitio Web MVP
 
-## Getting Started
+Sitio web profesional para NextCode, empresa dedicada al desarrollo de sitios web y aplicaciones web.
 
-First, run the development server:
+## Tecnologías
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Framework**: Next.js 16 (App Router)
+- **Lenguaje**: TypeScript
+- **Estilos**: Tailwind CSS 4
+- **Animaciones**: Framer Motion
+- **Iconos**: Lucide React
+- **Deploy**: Vercel
+
+## Estructura del Proyecto
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── contact/          # API para formulario de contacto
+│   ├── globals.css           # Estilos globales
+│   ├── layout.tsx            # Layout principal
+│   ├── page.tsx              # Página principal
+│   └── sitemap.ts            # Generador de sitemap
+├── components/
+│   ├── Header.tsx            # Navegación
+│   ├── Hero.tsx              # Sección hero
+│   ├── Benefits.tsx          # Beneficios
+│   ├── Services.tsx          # Servicios
+│   ├── Includes.tsx          # ¿Qué incluye?
+│   ├── Portfolio.tsx         # Portafolio
+│   ├── Contact.tsx           # Formulario de contacto
+│   └── Footer.tsx            # Pie de página
+├── data/
+│   └── site.ts               # Configuración del sitio
+└── lib/                      # Utilidades
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuración
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clonar el repositorio
+2. Copiar `.env.example` a `.env.local`
+3. Configurar las variables de entorno
+4. Instalar dependencias: `npm install`
+5. Ejecutar en desarrollo: `npm run dev`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Variables de Entorno
 
-## Learn More
+```env
+RESEND_API_KEY=           # API key de Resend para emails
+CONTACT_EMAIL=            # Email para recibir contactos
+NEXT_PUBLIC_WHATSAPP_NUMBER=  # Número de WhatsApp
+NEXT_PUBLIC_SITE_URL=     # URL del sitio
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Personalización
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Información del sitio
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Editar `src/data/site.ts` para actualizar:
+- Nombre y descripción
+- Número de WhatsApp
+- Email de contacto
+- Servicios ofrecidos
+- Proyectos del portafolio
+- Redes sociales
 
-## Deploy on Vercel
+### Estilos
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Los colores principales se definen en `src/app/globals.css`:
+- `--primary`: Azul/violeta principal
+- `--secondary`: Violeta secundario
+- `--accent`: Cyan de acento
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Despliegue en Vercel
+
+1. Conectar repositorio a Vercel
+2. Configurar variables de entorno
+3. Deploy automático con cada push
+
+## Comandos
+
+```bash
+npm run dev      # Desarrollo
+npm run build    # Compilar para producción
+npm run start    # Servidor de producción
+npm run lint     # Verificar código
+```
+
+## Licencia
+
+Todos los derechos reservados - NextCode
