@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 import { portfolio } from "@/data/site";
 
 const categories = [
@@ -11,6 +11,86 @@ const categories = [
   { id: "website", label: "Sitios Web" },
   { id: "webapp", label: "Aplicaciones" },
 ];
+
+function ProjectCard({ project }: { project: (typeof portfolio)[0] }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ y: -10 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setIsLoaded(false);
+      }}
+      className="group relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-primary/30 transition-all glow-hover"
+    >
+      {/* Preview Container */}
+      <div className="aspect-[16/10] bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 relative overflow-hidden">
+        {/* Default gradient background */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-xl gradient-bg opacity-50" />
+        </div>
+
+        {/* Iframe preview - loads on hover */}
+        {isHovered && (
+          <div className="absolute inset-0 bg-white">
+            {!isLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              </div>
+            )}
+            <iframe
+              src={project.url}
+              title={project.title}
+              className={`w-[400%] h-[400%] origin-top-left scale-[0.25] pointer-events-none transition-opacity duration-300 ${
+                isLoaded ? "opacity-100" : "opacity-0"
+              }`}
+              onLoad={() => setIsLoaded(true)}
+              sandbox="allow-scripts allow-same-origin"
+            />
+          </div>
+        )}
+
+        {/* Overlay on hover */}
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10"
+        >
+          <motion.span
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="flex items-center gap-2 px-6 py-3 rounded-full gradient-bg text-white font-medium shadow-lg"
+          >
+            <ExternalLink className="w-4 h-4" />
+            Ver proyecto
+          </motion.span>
+        </a>
+      </div>
+
+      {/* Content */}
+      <div className="p-6">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
+            {project.type}
+          </span>
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">
+          {project.title}
+        </h3>
+        <p className="text-text-muted text-sm">{project.description}</p>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Portfolio() {
   const [activeCategory, setActiveCategory] = useState("all");
@@ -71,54 +151,7 @@ export default function Portfolio() {
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{ y: -10 }}
-                className="group relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-primary/30 transition-all glow-hover"
-              >
-                {/* Image Placeholder */}
-                <div className="aspect-[16/10] bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-xl gradient-bg opacity-50" />
-                  </div>
-                  {/* Overlay on hover */}
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
-                  >
-                    <motion.span
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="flex items-center gap-2 px-6 py-3 rounded-full gradient-bg text-white font-medium"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Ver proyecto
-                    </motion.span>
-                  </a>
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-                      {project.type}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-text-muted text-sm">
-                    {project.description}
-                  </p>
-                </div>
-              </motion.div>
+              <ProjectCard key={project.id} project={project} />
             ))}
           </AnimatePresence>
         </motion.div>
