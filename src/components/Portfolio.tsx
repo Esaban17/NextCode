@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Loader2 } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 import { portfolio } from "@/data/site";
 
 const categories = [
@@ -13,9 +14,6 @@ const categories = [
 ];
 
 function ProjectCard({ project }: { project: (typeof portfolio)[0] }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-
   return (
     <motion.div
       layout
@@ -24,46 +22,25 @@ function ProjectCard({ project }: { project: (typeof portfolio)[0] }) {
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.3 }}
       whileHover={{ y: -10 }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setIsLoaded(false);
-      }}
       className="group relative rounded-2xl overflow-hidden bg-card-bg border border-card-border hover:border-primary/30 transition-all glow-hover"
     >
       {/* Preview Container */}
-      <div className="aspect-[16/10] bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 relative overflow-hidden">
-        {/* Default gradient background */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 rounded-xl gradient-bg opacity-50" />
-        </div>
-
-        {/* Iframe preview - loads on hover */}
-        {isHovered && (
-          <div className="absolute inset-0 bg-white">
-            {!isLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
-                <Loader2 className="w-8 h-8 text-primary animate-spin" />
-              </div>
-            )}
-            <iframe
-              src={project.url}
-              title={project.title}
-              className={`w-[400%] h-[400%] origin-top-left scale-[0.25] pointer-events-none transition-opacity duration-300 ${
-                isLoaded ? "opacity-100" : "opacity-0"
-              }`}
-              onLoad={() => setIsLoaded(true)}
-              sandbox="allow-scripts allow-same-origin"
-            />
-          </div>
-        )}
+      <div className="aspect-[16/10] relative overflow-hidden">
+        {/* Screenshot Image */}
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
 
         {/* Overlay on hover */}
         <a
           href={project.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10"
+          className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10"
         >
           <motion.span
             whileHover={{ scale: 1.1 }}
