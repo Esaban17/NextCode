@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,49 +20,32 @@ export async function POST(request: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: "El formato del email no es válido" },
+        { error: "El formato del email no es valido" },
         { status: 400 }
       );
     }
 
-    // Here you would integrate with your email service
-    // Options:
-    // 1. Nodemailer with SMTP
-    // 2. SendGrid
-    // 3. Resend
-    // 4. EmailJS (client-side alternative)
+    const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || process.env.CONTACT_EMAIL || "contacto@nextcode.com";
 
-    // For now, we'll log the data and return success
-    // In production, replace this with actual email sending logic
-    console.log("New contact form submission:", {
-      name,
-      email,
-      projectType,
-      message,
-      timestamp: new Date().toISOString(),
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: "NextCode <onboarding@resend.dev>",
+      to: [contactEmail],
+      replyTo: email,
+      subject: "Nuevo contacto de " + name + " - " + projectType,
+      html: "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\"><h2 style=\"color: #6366f1;\">Nuevo mensaje de contacto</h2><div style=\"background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;\"><p><strong>Nombre:</strong> " + name + "</p><p><strong>Email:</strong> <a href=\"mailto:" + email + "\">" + email + "</a></p><p><strong>Tipo de proyecto:</strong> " + projectType + "</p></div><div style=\"background: #fff; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px;\"><p><strong>Mensaje:</strong></p><p style=\"white-space: pre-wrap;\">" + message + "</p></div><p style=\"color: #6b7280; font-size: 12px; margin-top: 20px;\">Este mensaje fue enviado desde el formulario de contacto de NextCode.</p></div>",
     });
 
-    // Example with Resend (uncomment and configure):
-    /*
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    await resend.emails.send({
-      from: 'NextCode <onboarding@resend.dev>',
-      to: ['your-email@example.com'],
-      subject: `Nuevo contacto de ${name} - ${projectType}`,
-      html: `
-        <h2>Nuevo mensaje de contacto</h2>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Tipo de proyecto:</strong> ${projectType}</p>
-        <p><strong>Mensaje:</strong></p>
-        <p>${message}</p>
-      `,
-    });
-    */
+    if (error) {
+      console.error("Error sending email:", error);
+      return NextResponse.json(
+        { error: "Error al enviar el mensaje" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
-      { success: true, message: "Mensaje enviado correctamente" },
+      { success: true, message: "Mensaje enviado correctamente", id: data?.id },
       { status: 200 }
     );
   } catch (error) {

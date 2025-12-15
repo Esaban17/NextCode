@@ -6,7 +6,7 @@ export const siteConfig = {
     number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521234567890",
     message: "Hola, me interesa conocer más sobre los servicios de NextCode para desarrollar mi sitio web.",
   },
-  email: process.env.CONTACT_EMAIL || "contacto@nextcode.com",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contacto@nextcode.com",
   social: {
     instagram: "#",
     facebook: "#",
