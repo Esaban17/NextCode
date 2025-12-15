@@ -3,10 +3,10 @@ export const siteConfig = {
   description: "Creamos sitios y aplicaciones web que convierten ideas en experiencias digitales",
   tagline: "Soluciones digitales a tu medida",
   whatsapp: {
-    number: "521234567890", // Cambiar por número real
+    number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "521234567890",
     message: "Hola, me interesa conocer más sobre los servicios de NextCode para desarrollar mi sitio web.",
   },
-  email: "contacto@nextcode.com", // Cambiar por email real
+  email: process.env.CONTACT_EMAIL || "contacto@nextcode.com",
   social: {
     instagram: "#",
     facebook: "#",
