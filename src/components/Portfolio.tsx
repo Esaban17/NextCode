@@ -87,16 +87,21 @@ export default function Portfolio() {
                     <div className="w-16 h-16 rounded-xl gradient-bg opacity-50" />
                   </div>
                   {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <motion.button
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <motion.span
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       className="flex items-center gap-2 px-6 py-3 rounded-full gradient-bg text-white font-medium"
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Ver demo
-                    </motion.button>
-                  </div>
+                      Ver proyecto
+                    </motion.span>
+                  </a>
                 </div>
 
                 {/* Content */}
