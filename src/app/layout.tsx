@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/next";
+import { siteConfig } from "@/data/site";
+
+const siteUrl = "https://www.nextcodegt.com";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,10 +15,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://nextcode.com"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "NextCode | Desarrollo Web Profesional",
     template: "%s | NextCode",
+  },
+  alternates: {
+    canonical: "/",
   },
   description:
     "Creamos sitios y aplicaciones web que convierten ideas en experiencias digitales. Desarrollo web profesional para empresas, bodas, XV años y emprendedores.",
@@ -48,33 +54,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "https://nextcode.com",
+    url: siteUrl,
     siteName: "NextCode",
     title: "NextCode | Desarrollo Web Profesional",
     description:
       "Creamos sitios y aplicaciones web que convierten ideas en experiencias digitales.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "NextCode - Desarrollo Web Profesional",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "NextCode | Desarrollo Web Profesional",
     description:
       "Creamos sitios y aplicaciones web que convierten ideas en experiencias digitales.",
-    images: ["/og-image.png"],
   },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/site.webmanifest",
 };
 
 export const viewport: Viewport = {
@@ -82,6 +73,28 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: siteConfig.name,
+  url: siteUrl,
+  description: siteConfig.description,
+  email: siteConfig.email,
+  slogan: siteConfig.tagline,
+  areaServed: {
+    "@type": "Country",
+    name: "Guatemala",
+  },
+  knowsAbout: [
+    "Desarrollo web",
+    "Landing pages",
+    "Sitios web",
+    "Aplicaciones web",
+    "Next.js",
+    "React",
+  ],
 };
 
 export default function RootLayout({
@@ -92,6 +105,10 @@ export default function RootLayout({
   return (
     <html lang="es" className="scroll-smooth">
       <body className={`${inter.variable} antialiased bg-background text-foreground`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <Header />
         <main>{children}</main>
         <Footer />

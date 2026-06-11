@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://nextcode.com
+Host: https://www.nextcodegt.com
 
 # Sitemaps
-Sitemap: https://nextcode.com/sitemap.xml
+Sitemap: https://www.nextcodegt.com/sitemap.xml
